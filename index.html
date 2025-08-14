@@ -1,29 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- 默认 meta（防止 JSON 没加载前为空） -->
+  <meta property="og:title" content="Loading...">
+  <meta property="og:description" content="Loading coin data...">
+  <meta property="og:image" content="">
+  <meta property="og:url" content="https://hujiaqi98.github.io/solana-metadata/">
 
-  <!-- Open Graph (X 也会回退读取) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://hujiaqi98.github.io/solana-metadata/" />
-  <meta property="og:title" content="🚀 New Memecoin Launch!" />
-  <meta property="og:description" content="Countdown to launch: 10 minutes left! Join the hype." />
-  <meta property="og:image" content="https://hujiaqi98.github.io/solana-metadata/pxArt.png" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="🚀 New Memecoin Launch!" />
-  <meta name="twitter:description" content="Countdown to launch: 10 minutes left! Join the hype." />
-  <meta name="twitter:image" content="https://hujiaqi98.github.io/solana-metadata/pxArt.png" />
-  <!-- 可选：归属显示 -->
-  <!-- <meta name="twitter:site" content="@YourPlatform" />
-  <meta name="twitter:creator" content="@YourHandle" /> -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Loading...">
+  <meta name="twitter:description" content="Loading coin data...">
+  <meta name="twitter:image" content="">
 
   <title>Memecoin Launch</title>
+
+  <script>
+    async function loadMetadata() {
+      try {
+        const res = await fetch('./metadata.json');
+        const data = await res.json();
+
+        // 更新 meta
+        document.querySelector('meta[property="og:title"]').setAttribute('content', data.name);
+        document.querySelector('meta[property="og:description"]').setAttribute('content', data.description);
+        document.querySelector('meta[property="og:image"]').setAttribute('content', data.image);
+
+        document.querySelector('meta[name="twitter:title"]').setAttribute('content', data.name);
+        document.querySelector('meta[name="twitter:description"]').setAttribute('content', data.description);
+        document.querySelector('meta[name="twitter:image"]').setAttribute('content', data.image);
+
+        // 更新标题和页面内容
+        document.title = data.name;
+        document.getElementById('coin-title').textContent = data.name;
+        document.getElementById('coin-desc').textContent = data.description;
+        document.getElementById('coin-img').src = data.image;
+
+      } catch (err) {
+        console.error('Error loading metadata.json', err);
+      }
+    }
+
+    loadMetadata();
+  </script>
 </head>
 <body>
-  <h1>🚀 Memecoin Launch Countdown</h1>
-  <p>10 minutes to go...</p>
+  <h1 id="coin-title">Loading...</h1>
+  <p id="coin-desc">Please wait...</p>
+  <img id="coin-img" src="" alt="Coin Image" style="max-width:300px;">
 </body>
 </html>
